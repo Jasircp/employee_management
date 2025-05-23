@@ -15,27 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const employee_entity_1 = __importDefault(require("../entities/employee.entity"));
 const address_entity_1 = __importDefault(require("../entities/address.entity"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const department_route_1 = require("../routes/department.route");
 class EmployeeService {
     constructor(employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-    // async createEmployee(email: string, name: string, age: number, address: CreateAddressDto, password: string, role:EmployeeRole, dateOfJoining: Date,
-    //     em
-    // ): Promise<Employee> {
-    //     const newAddress = new Address();
-    //     newAddress.line1 = address.line1;
-    //     newAddress.pincode = address.pincode;
-    //     newAddress.line2 = address.line2;
-    //     newAddress.houseNo = address.houseNo;
-    //     const newEmployee = new Employee();
-    //     newEmployee.name = name;
-    //     newEmployee.email = email;
-    //     newEmployee.age = age;
-    //     newEmployee.role = role;
-    //     newEmployee.address = newAddress;
-    //     newEmployee.password = await bcrypt.hash(password, 10);
-    //     return this.employeeRepository.create(newEmployee);
-    // }
     createEmployee(employee) {
         return __awaiter(this, void 0, void 0, function* () {
             const newAddress = new address_entity_1.default();
@@ -54,6 +38,8 @@ class EmployeeService {
             newEmployee.experience = employee.experience;
             newEmployee.status = employee.status;
             newEmployee.address = newAddress;
+            const dept = yield department_route_1.departmentService.getDepartmentById(employee.departmentId); //retrieve the department
+            newEmployee.department = dept;
             return this.employeeRepository.create(newEmployee);
         });
     }
@@ -94,8 +80,10 @@ class EmployeeService {
                 updatedAddress.pincode = updatedEmployee.address.pincode;
                 updatedAddress.line2 = updatedEmployee.address.line2;
                 updatedAddress.houseNo = updatedEmployee.address.houseNo;
-                updatedAddress.id = existingEmployee.address.id;
+                updatedAddress.id = existingEmployee.address.id; // so that existing employees adddress is updated instead of new address entry created
                 employee.address = updatedAddress;
+                const dept = yield department_route_1.departmentService.getDepartmentById(updatedEmployee.departmentId); //retrieve the department
+                employee.department = dept;
                 yield this.employeeRepository.update(id, employee);
             }
         });

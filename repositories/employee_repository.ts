@@ -20,7 +20,8 @@ class EmployeeRepository {
         return this.repository.findOne({ 
             where: {id},
             relations: {
-                address: true
+                address: true,
+                department: true
             }
         }); //same as {id: id}
     }

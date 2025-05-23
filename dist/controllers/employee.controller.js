@@ -21,7 +21,7 @@ const employee_entity_1 = require("../entities/employee.entity");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
-        router.post("/", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR), this.createEmployee.bind(this));
+        router.post("/", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR, employee_entity_1.EmployeeRole.DEVELOPER), this.createEmployee.bind(this));
         router.get("/", this.getAllEmployees.bind(this));
         router.get("/:id", this.getEmployeeById.bind(this));
         router.put("/:id", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR), this.updateEmployee.bind(this));

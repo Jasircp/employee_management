@@ -66,4 +66,9 @@ __decorate([
     (0, class_validator_1.IsEnum)(employee_entity_1.Status),
     __metadata("design:type", String)
 ], CreateEmployeeDto.prototype, "status", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", Number)
+], CreateEmployeeDto.prototype, "departmentId", void 0);
 //# sourceMappingURL=create-employee.dto.js.map

@@ -16,6 +16,7 @@ exports.Status = exports.EmployeeRole = void 0;
 const typeorm_1 = require("typeorm");
 const abstract_entity_1 = __importDefault(require("./abstract.entity"));
 const address_entity_1 = __importDefault(require("./address.entity"));
+const department_entity_1 = __importDefault(require("./department.entity"));
 var EmployeeRole;
 (function (EmployeeRole) {
     EmployeeRole["UI"] = "UI";
@@ -82,6 +83,10 @@ __decorate([
     }),
     __metadata("design:type", String)
 ], Employee.prototype, "status", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => department_entity_1.default, (department) => department.employee),
+    __metadata("design:type", department_entity_1.default)
+], Employee.prototype, "department", void 0);
 Employee = __decorate([
     (0, typeorm_1.Entity)()
 ], Employee);

@@ -3,6 +3,7 @@ import { CreateAddressDto } from "./create-address.dto";
 import { Type } from "class-transformer";
 import { EmployeeRole, Status } from "../entities/employee.entity";
 
+import { CreateDepartmentDto } from "./create-department.dto";
 export class CreateEmployeeDto {
   @IsNotEmpty()
   @IsEmail()
@@ -42,4 +43,9 @@ export class CreateEmployeeDto {
 
   @IsEnum(Status)
   status: Status
-}
+
+  @IsNumber()
+  @IsNotEmpty()
+  departmentId: number
+
+ }

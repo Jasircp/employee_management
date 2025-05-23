@@ -1,31 +1,14 @@
 import EmployeeRepository from "../repositories/employee_repository";
 import Employee, { EmployeeRole } from "../entities/employee.entity";
 import Address from "../entities/address.entity";
+import Department from "../entities/department.entity";
 import { CreateAddressDto } from "../dto/create-address.dto";
 import { CreateEmployeeDto } from "../dto/create-employee.dto";
 import bcrypt from 'bcrypt';
-import HttpException from "../exception/httpException";
+import { departmentService } from "../routes/department.route";
 
 class EmployeeService {
     constructor(private employeeRepository: EmployeeRepository) {}
-
-    // async createEmployee(email: string, name: string, age: number, address: CreateAddressDto, password: string, role:EmployeeRole, dateOfJoining: Date,
-    //     em
-    // ): Promise<Employee> {
-    //     const newAddress = new Address();
-    //     newAddress.line1 = address.line1;
-    //     newAddress.pincode = address.pincode;
-    //     newAddress.line2 = address.line2;
-    //     newAddress.houseNo = address.houseNo;
-    //     const newEmployee = new Employee();
-    //     newEmployee.name = name;
-    //     newEmployee.email = email;
-    //     newEmployee.age = age;
-    //     newEmployee.role = role;
-    //     newEmployee.address = newAddress;
-    //     newEmployee.password = await bcrypt.hash(password, 10);
-    //     return this.employeeRepository.create(newEmployee);
-    // }
 
     async createEmployee(employee: CreateEmployeeDto): Promise<Employee> {
         const newAddress = new Address();
@@ -44,6 +27,8 @@ class EmployeeService {
         newEmployee.experience = employee.experience;
         newEmployee.status = employee.status;
         newEmployee.address = newAddress;
+        const dept = await departmentService.getDepartmentById(employee.departmentId); //retrieve the department
+        newEmployee.department = dept;
         return this.employeeRepository.create(newEmployee);
     }
 
@@ -82,6 +67,8 @@ class EmployeeService {
             updatedAddress.houseNo = updatedEmployee.address.houseNo;
             updatedAddress.id = existingEmployee.address.id; // so that existing employees adddress is updated instead of new address entry created
             employee.address = updatedAddress;
+            const dept = await departmentService.getDepartmentById(updatedEmployee.departmentId); //retrieve the department
+            employee.department = dept;
             await this.employeeRepository.update(id, employee);
         }
 

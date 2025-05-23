@@ -9,55 +9,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-class EmployeeRepository {
+class DepartmentRepository {
     constructor(repository) {
         this.repository = repository;
     }
-    create(employee) {
+    create(department) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.save(employee);
+            return this.repository.save(department);
         });
     }
     findMany() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.find({
-                relations: {
-                    address: true
-                }
-            });
+            return this.repository.find();
         });
     }
     findOneBy(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.repository.findOne({
-                where: { id },
-                relations: {
-                    address: true,
-                    department: true
-                }
-            }); //same as {id: id}
+                where: { id }
+            });
         });
     }
-    findByEmail(email) {
+    update(id, department) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.repository.findOneBy({ email });
+            yield this.repository.save(Object.assign({ id }, department));
         });
     }
-    update(id, employee) {
+    remove(department) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.repository.save(Object.assign({ id }, employee));
-        });
-    }
-    delete(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.repository.delete({ id });
-        });
-    }
-    remove(employee) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.repository.softRemove(employee);
+            yield this.repository.remove(department);
         });
     }
 }
-exports.default = EmployeeRepository;
-//# sourceMappingURL=employee_repository.js.map
+exports.default = DepartmentRepository;
+//# sourceMappingURL=department.repository.js.map

@@ -10,7 +10,7 @@ import { EmployeeRole } from "../entities/employee.entity";
 class EmployeeController {
 
     constructor( private employeeService: EmployeeService, router: Router) {
-        router.post("/", checkRole(EmployeeRole.HR), this.createEmployee.bind(this));
+        router.post("/", checkRole(EmployeeRole.HR,EmployeeRole.DEVELOPER), this.createEmployee.bind(this));
         router.get("/", this.getAllEmployees.bind(this));
         router.get("/:id", this.getEmployeeById.bind(this));
         router.put("/:id", checkRole(EmployeeRole.HR), this.updateEmployee.bind(this));
