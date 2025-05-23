@@ -27,7 +27,7 @@ class EmployeeRepository {
             });
         });
     }
-    findOneById(id) {
+    findOneBy(id) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.repository.findOne({
                 where: { id },
@@ -35,6 +35,11 @@ class EmployeeRepository {
                     address: true
                 }
             }); //same as {id: id}
+        });
+    }
+    findByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.repository.findOneBy({ email });
         });
     }
     update(id, employee) {
@@ -49,7 +54,7 @@ class EmployeeRepository {
     }
     remove(employee) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.repository.remove(employee);
+            yield this.repository.softRemove(employee);
         });
     }
 }

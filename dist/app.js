@@ -17,10 +17,15 @@ const loggerMiddleware_1 = __importDefault(require("./middlewares/loggerMiddlewa
 const data_source_1 = __importDefault(require("./db/data-source"));
 const employee_route_1 = __importDefault(require("./routes/employee.route"));
 const errorMiddleware_1 = require("./middlewares/errorMiddleware");
+const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
+const auth_middleware_1 = require("./middlewares/auth.middleware");
+const logger_service_1 = require("./services/logger.service");
 const server = (0, express_1.default)();
+const logger = logger_service_1.LoggerService.getInstance('app()');
 server.use(express_1.default.json());
 server.use(loggerMiddleware_1.default);
-server.use("/employees", employee_route_1.default);
+server.use("/employees", auth_middleware_1.authMiddleware, employee_route_1.default);
+server.use("/auth", auth_routes_1.default);
 server.use(errorMiddleware_1.errorMiddleware);
 server.get("/", (req, res) => {
     console.log(req.url);
@@ -29,14 +34,14 @@ server.get("/", (req, res) => {
 (() => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield data_source_1.default.initialize();
-        console.log("Connected to DB");
+        logger.info("Database connected");
     }
-    catch (_a) {
-        console.error("Failed to connect to DB");
+    catch (e) {
+        logger.error(`Failed to connect to DB--${e}`);
         process.exit(1);
     }
     server.listen(3000, () => {
-        console.log("server listening to 3000");
+        logger.info("server listening to 3000");
     });
 }))();
 //# sourceMappingURL=app.js.map

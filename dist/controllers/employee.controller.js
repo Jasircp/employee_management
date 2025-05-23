@@ -16,14 +16,16 @@ const httpException_1 = __importDefault(require("../exception/httpException"));
 const class_transformer_1 = require("class-transformer");
 const create_employee_dto_1 = require("../dto/create-employee.dto");
 const class_validator_1 = require("class-validator");
+const authorization_middleware_1 = require("../middlewares/authorization.middleware");
+const employee_entity_1 = require("../entities/employee.entity");
 class EmployeeController {
     constructor(employeeService, router) {
         this.employeeService = employeeService;
-        router.post("/", this.createEmployee.bind(this));
+        router.post("/", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR), this.createEmployee.bind(this));
         router.get("/", this.getAllEmployees.bind(this));
         router.get("/:id", this.getEmployeeById.bind(this));
-        router.put("/:id", this.updateEmployee.bind(this));
-        router.delete("/:id", this.deleteEmployee.bind(this));
+        router.put("/:id", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR), this.updateEmployee.bind(this));
+        router.delete("/:id", (0, authorization_middleware_1.checkRole)(employee_entity_1.EmployeeRole.HR), this.deleteEmployee.bind(this));
     }
     createEmployee(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -34,7 +36,7 @@ class EmployeeController {
                     console.log(JSON.stringify(errors));
                     throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto.email, createEmployeeDto.name, createEmployeeDto.age, createEmployeeDto.address);
+                const savedEmployee = yield this.employeeService.createEmployee(createEmployeeDto);
                 res.status(201).send(savedEmployee);
             }
             catch (error) {

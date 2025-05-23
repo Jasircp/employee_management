@@ -4,15 +4,17 @@ import HttpException from "../exception/httpException";
 import { plainToInstance } from "class-transformer";
 import { CreateEmployeeDto } from "../dto/create-employee.dto";
 import { validate } from "class-validator";
+import { checkRole } from "../middlewares/authorization.middleware";
+import { EmployeeRole } from "../entities/employee.entity";
 
 class EmployeeController {
 
     constructor( private employeeService: EmployeeService, router: Router) {
-        router.post("/", this.createEmployee.bind(this));
+        router.post("/", checkRole(EmployeeRole.HR), this.createEmployee.bind(this));
         router.get("/", this.getAllEmployees.bind(this));
         router.get("/:id", this.getEmployeeById.bind(this));
-        router.put("/:id", this.updateEmployee.bind(this));
-        router.delete("/:id", this.deleteEmployee.bind(this));
+        router.put("/:id", checkRole(EmployeeRole.HR), this.updateEmployee.bind(this));
+        router.delete("/:id", checkRole(EmployeeRole.HR), this.deleteEmployee.bind(this));
     }
 
     async createEmployee(req: Request, res: Response, next:NextFunction ){
@@ -23,12 +25,7 @@ class EmployeeController {
                 console.log(JSON.stringify(errors));
                 throw new HttpException(400, JSON.stringify(errors));
             }
-            const savedEmployee = await this.employeeService.createEmployee(
-                createEmployeeDto.email,
-                createEmployeeDto.name,
-                createEmployeeDto.age,
-                createEmployeeDto.address
-            );
+            const savedEmployee = await this.employeeService.createEmployee( createEmployeeDto);
             res.status(201).send(savedEmployee);
             } catch (error) {
             next(error);

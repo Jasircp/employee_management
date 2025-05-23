@@ -16,13 +16,17 @@ class EmployeeRepository {
         });
     }
 
-    async findOneById(id: number): Promise<Employee> {
+    async findOneBy(id: number): Promise<Employee> {
         return this.repository.findOne({ 
             where: {id},
             relations: {
                 address: true
             }
         }); //same as {id: id}
+    }
+
+    async findByEmail(email: string): Promise<Employee> {
+        return this.repository.findOneBy({email});
     }
 
     async update(id: number, employee: Employee): Promise<void> {
@@ -34,7 +38,7 @@ class EmployeeRepository {
     }
 
     async remove(employee: Employee): Promise<void> {
-        await this.repository.remove(employee);
+        await this.repository.softRemove(employee);
     }
 }
 
