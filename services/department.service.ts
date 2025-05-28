@@ -7,9 +7,9 @@ import DepartmentRepository from "../repositories/department.repository";
 class DepartmentService {
     constructor(private departmentRepository: DepartmentRepository) {}
 
-    async createDepartment(deptName: string): Promise<Department> {
+    async createDepartment(deptName: CreateDepartmentDto): Promise<Department> {
         const newDepartment = new Department();
-        newDepartment.name = deptName;
+        newDepartment.name = deptName.name;
         return this.departmentRepository.create(newDepartment);
     }
 

@@ -23,6 +23,10 @@ class DepartmentRepository {
         await this.repository.save({id,...department});
     }
 
+    async delete(depId: number) {
+        await this.repository.delete({ id: depId });
+    }
+
     async remove(department: Department): Promise<void> {
         await this.repository.remove(department);
     }
