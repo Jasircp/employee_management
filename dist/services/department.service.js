@@ -20,7 +20,7 @@ class DepartmentService {
     createDepartment(deptName) {
         return __awaiter(this, void 0, void 0, function* () {
             const newDepartment = new department_entity_1.default();
-            newDepartment.name = deptName;
+            newDepartment.name = deptName.name;
             return this.departmentRepository.create(newDepartment);
         });
     }

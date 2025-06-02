@@ -7,11 +7,13 @@ import { errorMiddleware } from "./middlewares/errorMiddleware";
 import authRouter from "./routes/auth.routes";
 import { authMiddleware } from "./middlewares/auth.middleware";
 import { LoggerService } from "./services/logger.service";
+import cors from "cors";
 
 const server = express();
 const logger = LoggerService.getInstance('app()');
 server.use(express.json());
 server.use(loggerMiddleware);
+server.use(cors());
 
 server.use("/employees", authMiddleware, employeeRouter);
 server.use("/departments", authMiddleware, departmentRouter);

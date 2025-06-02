@@ -35,6 +35,11 @@ class DepartmentRepository {
             yield this.repository.save(Object.assign({ id }, department));
         });
     }
+    delete(depId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.repository.delete({ id: depId });
+        });
+    }
     remove(department) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.repository.remove(department);

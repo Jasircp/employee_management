@@ -36,7 +36,7 @@ class DepartmentController {
                     console.log(JSON.stringify(errors));
                     throw new httpException_1.default(400, JSON.stringify(errors));
                 }
-                const savedDepartment = yield this.departmentService.createDepartment(createDepartmentDto.name);
+                const savedDepartment = yield this.departmentService.createDepartment(createDepartmentDto);
                 res.status(201).send(savedDepartment);
             }
             catch (error) {
