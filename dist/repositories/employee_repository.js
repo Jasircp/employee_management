@@ -22,7 +22,8 @@ class EmployeeRepository {
         return __awaiter(this, void 0, void 0, function* () {
             return this.repository.find({
                 relations: {
-                    address: true
+                    address: true,
+                    department: true
                 }
             });
         });
